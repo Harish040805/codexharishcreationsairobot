@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="icon" href="7db2e199-c244-4e17-ae27-83005b93399d.jpg" type="image/png">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Codex - Harish Creations Robot</title>
+<style>
+:root {--primary-color: #333;--secondary-color: #ccc;--background-color: #f0f0f0;--accent-color: #ff9900;--dark-gray: #606060;
+  --light-gray: #ccc;--maroon: maroon;--gold: gold;--firebrick: firebrick;}
+body {font-family: 'Courier New', monospace;margin: 0;background-color: #fff;display: flex;justify-content: center;align-items: center;}
+#splash-screen {position: fixed;top: 0;left: 0;width: 100%;height: 100vh;background-color: #fff;display: flex;
+  justify-content: center;align-items: center;z-index: 1000;}
+#splash-screen img {width: 200px;height: 200px;}
+.robot-body {display: flex;flex-direction: column;align-items: center;position: absolute;
+  top: 30%;left: 50%;transform: translate(-50%, -50%);}
+.robot-body.weight {display: flex;flex-direction: column;align-items: center;position: relative;}
+.robot-torso {width: 250px;height: 370px;background: linear-gradient(to bottom, #fff, #cdcdcd);border-radius: 10px;
+  position: absolute;top: 100px;left: 50%;transform: translateX(-50%);box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);z-index: 2000;}
+.robot-head {width: 120px;height: 90px;background: linear-gradient(#9a9a9a,  #000000);border-radius: 50%;
+  position: absolute;top: 0;left: 50%;transform: translateX(-50%);border-bottom: 12px solid #666;border-radius: 30%;}
+.robot-arms, .robot-legs {display: flex;justify-content: space-between;width: 180px;position: absolute;}
+.robot-arms {top: 90px;}
+.robot-legs {top: 300px;}
+.robot-arm, .robot-leg {
+  width: 60px;height: 180px;background: linear-gradient(to bottom, #bbb, #000);border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);position: relative;background-size: 6px 6px;}
+.left-arm, .left-leg {left: -94px;}
+.right-arm, .right-leg {right: -94px;}
+.instruction-container {display: flex;flex-wrap: wrap;justify-content: space-between;width: 10%;height: 25%;position: fixed; 
+  z-index: 10; background: #606060;border-radius: 10%;top: 65%;left: 85%;}
+.robot-text {position: absolute;top: 10%;left: 50%;transform: translate(-50%, -50%);font-size: 16px;font-weight: bold;
+  color: #000000b6;text-align: center;z-index: 5000;}
+.instruction-box {position: fixed;top: 0;left: 0;z-index: 2;background-color: #f0f0f0;padding: 10px;border: 1px solid #ddd;
+  width: 285px;height: 100%;font-size: 14px !important;max-height: 96vh; overflow-y: auto;overflow-x: hidden;scrollbar-width: thin; 
+  scrollbar-color: #888 #f0f0f0;transform: scale(1);transform-origin: 0 0;-webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;-ms-text-size-adjust: none;text-size-adjust: none;}
+.instruction-box::-webkit-scrollbar {width: 6px;}
+.instruction-box::-webkit-scrollbar-thumb {background-color: #888;border-radius: 10px;}
+.instruction-box::-webkit-scrollbar-thumb:hover {background-color: #555;}
+.robot-cylinder {width: 370px;height: 10px;background: linear-gradient(to bottom, #7a7a7a, #000000);border-radius: 10%;
+  position: absolute;top: 470px;left: 50%;transform: translateX(-50%);z-index: 1500;box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);}
+.robot-turbo {top: 630px;left: 0%;transform: translateX(-50%);z-index: 900;}
+.turbo-indicator {width: 40px;height: 40px;background: linear-gradient(#ff0000, #ff7f00, #ffff00); top:-150px; left: 17px;
+  animation: fire-pulse 2s infinite;transform-origin: bottom right;border: 1px solid #32557f;border-radius: 0 50% 0% 50%;
+  transform: rotate(45deg); opacity: 0; position: relative;}
+.turbo-active {opacity: 1; animation: turbo-flicker 2s infinite;}
+@keyframes turbo-flicker {
+  0% {opacity: 1;}
+  20% {opacity: 0.7;}
+  40% {opacity: 0.4;}
+  60% {opacity: 0.7;}
+  80% {opacity: 1;}
+  100% {opacity: 0.7;}
+}
+#robot {position: absolute;transition: all 0.8s ease-in-out;}
+#toggleInstructions {position: fixed;top: 10px;left: 10px;z-index: 9999;background: #000;color: #fff;border: none;border-radius: 7px;
+  width: 200px;height: 40px;font-size: 18px;cursor: pointer;transition: transform 0.2s ease;}
+#toggleInstructions:hover{background: #424242;color: #fff;}
+#instructionsBox {display: none;}
+::-webkit-scrollbar {display: none;}
+* {scrollbar-width: none;-ms-overflow-style: none;}
+.vertical-text{position: absolute; top: 0; left: 5px; font-size: 40px; font-weight: bold; color: #3f3f3f;text-align: center; 
+  line-height: 1.2; margin-left: 5px;}
+.codex-harish-creations-robot{color: #FFFFFF; background-color: #808080; padding: 10px; border-radius: 5px;}
+.by-harish-creations{color: #808080; background-color: #FFFFFF; padding: 5px; border: 1px solid #808080; border-radius: 5px;}
+	</style>
+</head>
+<body>
+	<div id="splash-screen">
+        <img src="7db2e199-c244-4e17-ae27-83005b93399d.jpg" type="image/png" style="border-radius: 50%;" alt="Splash Screen Image">
+    </div>
+	<script>
+setTimeout(() => {
+    document.getElementById('splash-screen').style.display = 'none';
+}, 3000);
+	</script>
+<center>
+    <h1 class="codex-harish-creations-robot" contenteditable="true">Codex Harish Creations Robot</h1>
+    <h2 class="by-harish-creations" contenteditable="true">By Harish Creations</h2>
+</center>
+<div class="robot-body">
+    <div class="robot-head"></div>
+    <div class="robot-arms">
+        <div class="robot-arm left-arm"></div>
+        <div class="robot-arm right-arm"></div>
+    </div>
+    <div class="robot-legs">
+        <div class="robot-leg left-leg"></div>
+        <div class="robot-leg right-leg"></div>
+    </div>
+    <div class="robot-torso" style="z-index: 2000;">
+        <span class="robot-text" style="margin-bottom: 30px;">
+		<br><br><br><br>
+			<center>
+			<div style="object-fit: contain; width: 100px; height: 105px;">
+				<img src="7db2e199-c244-4e17-ae27-83005b93399d.jpg"  type="image/png" style="width: 60%; height: 60%; border-radius: 50%;">
+                <br><span contenteditable="true">Harish Creations Robot</span>
+			</div>
+			</center>	        
+        </span>
+		<br><br><br>
+	<div id="mechanical-wheel-container"
+	style="position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 1;  margin-top: 40px;">
+    <style>
+        @keyframes spin {
+            0% {transform: rotate(0deg);}
+            100% {transform: rotate(360deg);}
+        }
+    </style>
+    <div class="wheel-container"
+	style="position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 1;">
+		<div class="vertical-text" contenteditable="true">
+			C<br>O<br>D<br>E<br>X
+		</div>
+    <div style="width: 145px; height: 145px; color: #00ff66; border: 2px solid #00ff66; border-radius: 20px; background-color: #242424;">
+      <div id="workstation-status" style="font-size: 12px; color: #00ff66; opacity: 0.8; padding-top: 4px; text-align: center;"></div>
+    </div>
+    </div>
+	</div>
+    </div>
+<div class="robot-turbo" style="position: relative; width: 100%; height: 100%; display: flex; justify-content: center;">
+  <div class="turbo-indicator"></div>
+</div>
+<script>
+const turboButton = document.getElementById('turbo-button');
+const turboIndicator = document.querySelector('.turbo-indicator');
+turboButton.addEventListener('click', () => {
+  turboIndicator.classList.add('turbo-active');
+  setTimeout(() => {
+    turboIndicator.classList.remove('turbo-active');
+  }, 5000); 
+});
+</script>
+	<div class="robot-cylinder"></div>
+</div>
+<form id="workstation-form" 
+  style="position: fixed; right: 0; bottom: 0; top: 0; z-index: 100; width: auto; height: 99vh; background-color: #111; color: #00ff66; border: 2px solid #00ff66; 
+         border-radius: 0; box-shadow: -2px 0 12px rgba(0, 255, 100, 0.25); font-family: monospace; display: flex; flex-direction: column;">
+  <div contenteditable="true" style="font-weight: bold; font-size: 14px; text-align: center; letter-spacing: 0.5px; border-bottom: 1px solid #00ff66; padding: 8px 0; flex-shrink: 0;">
+    WORKSTATION TERMINAL
+  </div>
+  <textarea id="workstation-input" name="command" placeholder="Enter commands here..."
+    style="flex-grow: 1; width: 100%; box-sizing: border-box; padding: 10px; font-size: 14px; color: #00ff66; background-color: #000; border: none; outline: none; resize: horizontal; font-family: monospace; caret-color: #00ff66;"
+    aria-label="Workstation command input"></textarea>
+</form>
+<button contenteditable="true" id="toggleInstructions" title="Show/Hide Instructions">Instructions/Help</button>
+<div id="instructionsBox" class="instruction-box" contenteditable="true">
+  <br><br><br>
+  <center><h4>Robot Workstation Instructions</h4></center>
+  <p>
+    The robot operates through a custom command-based language. All commands must be
+    typed in the workstation input field and executed by pressing the
+    <strong>Enter</strong> key. Commands are <strong>case-sensitive</strong> and must
+    follow the exact formats shown below. 
+    <br><br>
+    For best results, give values in the range of <strong>10-50</strong> for <strong>Move</strong> commands and 
+    in the range of <strong>10-30</strong> for <strong>Rotate</strong> commands.
+  </p>
+  <b>NOTE:</b> no means number; MOV UP(no) => MOV UP(give any number); Ex: MOV UP(5)
+  <h5>1. Start and Stop Commands</h5>
+  <ul>
+    <li><strong>HELO</strong> – Initial command used to turn on the robot and make it work, only after which the robot listens to the user given command.</li>
+    <li><strong>GOODBYE</strong> – Final command to turn the robot off.</li>
+  </ul>
+  <h5>2. Standard Movement Commands</h5>
+  <ul>
+    <li><strong>MOV UP(no)</strong> – Moves the robot upward by the specified number of steps.</li>
+    <li><strong>MOV DN(no)</strong> – Moves the robot downward by the specified number of steps.</li>
+    <li><strong>MOV LF(no)</strong> – Moves the robot left by the specified number of steps.</li>
+    <li><strong>MOV RT(no)</strong> – Moves the robot right by the specified number of steps.</li>
+  </ul>
+  <h5>3. Standard Rotation Commands</h5>
+  <ul>
+    <li><strong>ROT LF(no)</strong> – Rotates the robot to the left by the given degree or unit.</li>
+    <li><strong>ROT RT(no)</strong> – Rotates the robot to the right by the given degree or unit.</li>
+  </ul>
+  <h5>4. Infinite and Reset Commands</h5>
+  <ul>
+    <li><strong>MOV UP(inf)</strong>, <strong>MOV DN(inf)</strong>,
+        <strong>MOV LF(inf)</strong>, <strong>MOV RT(inf)</strong> – Moves the robot infinitely in the specified direction until another command is given.</li>
+    <li><strong>ROT LF(inf)</strong>, <strong>ROT RT(inf)</strong> – Continuously rotates the robot in the given direction until interrupted.</li>
+    <li><strong>MOV ORG</strong> – Instantly returns the robot to its original starting position.</li>
+    <li><strong>STOP</strong> - Stop the robot in the last saved position during movement or rotation.</li>
+    <li><strong>/NBR</strong> - Brings the code to the next line or creates a new line.</li>
+    <li><strong>SPD no</strong> - Sets speed for the robot externally (optional). No () for setting speed.</li>
+  </ul>
+<h5>5. Turbo Mode Commands</h5>
+<p>
+  Turbo mode allows faster movement and rotation using the same set of commands.
+  To activate turbo, use the prefixes <strong>TRB</strong> (for movement) or <strong>TROT</strong> (for rotation).
+</p>
+<p>Turbo command examples:</p>
+<ul>
+  <li><strong>TRB UP(no)</strong> – Moves the robot upward at turbo speed.</li>
+  <li><strong>TRB DN(no)</strong> – Moves the robot downward at turbo speed.</li>
+  <li><strong>TRB LF(no)</strong> – Moves the robot left at turbo speed.</li>
+  <li><strong>TRB RT(no)</strong> – Moves the robot right at turbo speed.</li>
+  <li><strong>TROT LF(no)</strong> – Rotates the robot left at turbo speed.</li>
+  <li><strong>TROT RT(no)</strong> – Rotates the robot right at turbo speed.</li>
+</ul>
+<h5>6. Combined Movement and Rotation Commands</h5>
+<p>
+  The robot can perform combined movement and rotation actions using the <strong>MOV ROT</strong>
+  format. These commands cause the robot to move in a specified direction while simultaneously
+  rotating either left or right. Infinite versions of these commands are also supported.
+</p>
+<ul>
+  <li><strong>MOV ROT UP LF(no)</strong> – Moves upward while rotating left.</li>
+  <li><strong>MOV ROT UP RT(no)</strong> – Moves upward while rotating right.</li>
+  <li><strong>MOV ROT DN LF(no)</strong> – Moves downward while rotating left.</li>
+  <li><strong>MOV ROT DN RT(no)</strong> – Moves downward while rotating right.</li>
+  <li><strong>MOV ROT UP LF(inf)</strong>, <strong>MOV ROT UP RT(inf)</strong> – Infinite combined motion upward with rotation.</li>
+  <li><strong>MOV ROT DN LF(inf)</strong>, <strong>MOV ROT DN RT(inf)</strong> – Infinite combined motion downward with rotation.</li>
+</ul>
+<p>
+  Turbo versions of these combined commands also exist. You can prefix them with
+  <strong>TRB</strong> or <strong>TROT</strong> for turbo performance.
+</p>
+  <h5>7. Workstation Behavior</h5>
+  <ul>
+    <li>The workstation contains a single input field where commands are entered.</li>
+    <li>Each command is executed by pressing the <strong>Enter</strong> key.</li>
+    <li>The <strong>STOP</strong> command is used to stop the infinitely moving robot in the last saved position.</li>
+    <li>There are no on-screen panels or buttons — all control is via commands.</li>
+    <li>If an invalid or unrecognized command is entered, an error message will be displayed in the workstation.</li>
+  </ul>
+</div>
+<script>
+alert("Users can edit any content in this page. Use wisely. For optimal experience, increase the volume, view the page on large screens. UNDER CONSTRUCTION: inf and STOP movements");
+document.getElementById("toggleInstructions").addEventListener("click", () => {
+  const box = document.getElementById("instructionsBox");
+  box.style.display = (box.style.display === "none" || box.style.display === "") ? "block" : "none";
+});
+const robot = document.querySelector(".robot-body");
+const workstationInput = document.querySelector("#workstation-form #workstation-input");
+const workstationStatus = document.getElementById("workstation-status");
+let posX = 0, posY = 0, rotation = 0;
+updateRobot();
+let speed = 13;
+let turboMultiplier = 2;
+let moveInterval = null;
+let infiniteMoveInterval = null;
+window.addEventListener("keydown", (e) => {
+  if (e.key === "F5" || (e.ctrlKey && e.key.toLowerCase() === "r") || (e.ctrlKey && e.altKey && e.key.toLowerCase() === "r")) {
+    e.preventDefault();
+    alert("Reload is disabled! Use the browser reload button instead.");
+  }
+});
+function resetPosition() {
+  posX = 0; posY = 0; rotation = 0;
+  updateRobot();
+  workstationStatus.textContent = "Robot reset to origin.";
+}
+robot.style.transition = "transform 0.6s ease-in-out";
+function updateRobot() {
+  robot.style.transform = `rotate(${rotation}deg) translate(${posX}px, ${posY}px)`;
+}
+function startInfiniteMove(direction, turbo = false) {
+  stopInfiniteMove();
+  const spd = turbo ? speed * turboMultiplier : speed;
+  function animate() {
+    switch(direction) {
+      case "UP": posY -= step; break; case "DN": posY += step; break; case "LF": posX -= step; break; case "RT": posX += step; break;
+    }
+    updateRobot();
+    infiniteMoveInterval = requestAnimationFrame(animate);
+  }
+  animate();
+}
+function stopInfiniteMove() {
+  if (moveInterval) {clearInterval(moveInterval); moveInterval = null;}
+  if (infiniteMoveInterval) {cancelAnimationFrame(infiniteMoveInterval); infiniteMoveInterval = null;}
+}
+function moveRobot(direction, distance, turbo = false, rotate = false, rotateDir = null) {
+  stopInfiniteMove();
+  const actualSpeed = turbo ? speed * turboMultiplier : speed;
+  const moveStep = distance * actualSpeed;
+  robot.style.transition = turbo ? "transform 0.5s ease-in-out" : "transform 0.8s ease-in-out";
+  if (!rotate) {
+    switch (direction) {
+      case "UP": posY -= moveStep; break; case "DN": posY += moveStep; break; case "LF": posX -= moveStep; break; case "RT": posX += moveStep; break;
+    }
+  } else {
+    const angleChange = rotateDir === "RT" ? 15 * distance : -15 * distance;
+    rotation += angleChange;
+    switch (direction) {case "UP": posY -= moveStep; break; case "DN": posY += moveStep; break;}
+  }
+  updateRobot();
+}
+function rotateRobot(dir, distance, turbo = false) {
+  robot.style.transition = "transform 0.6s ease-in-out";
+  const rotateStep = distance * (turbo ? 2 * turboMultiplier : 2);
+  rotation += dir === "RT" ? rotateStep : -rotateStep;
+  updateRobot();
+}
+function executeCommand(cmd) {
+  if (!cmd.trim()) return;
+    if(cmd==="HELO"){
+      isActivated=true;
+      const text="Executed: Hello! I am Codex Robot! Your Low Code Moving Robot Web Application! Follow the Robot Workstation Instructions for Further Assistance!";
+      workstationStatus.textContent=text;
+      speak(text);
+      return;
+    }
+    if(cmd==="GOODBYE"){
+      isActivated=false;
+      const text="Good Bye!";
+      workstationStatus.textContent=text;
+      speak(text);
+      return;
+    }
+    if(!isActivated){workstationStatus.textContent="Invalid syntax (case mismatch)."; return;}
+  if (cmd.startsWith("SPD ")) {
+    const val = cmd.split(" ")[1];
+    if (val === "RESET") {
+      speed = 13;
+      const t="Executed: Speed reset to default.";
+      workstationStatus.textContent=t;
+      speak(t);
+      return;
+    }
+    const num = parseInt(val);
+    if (!isNaN(num) && num > 0) {
+      speed = num;
+      const t=`Executed: Speed set to ${num}`;
+      workstationStatus.textContent=t;
+      speak(t);
+      return;
+    }
+    workstationStatus.textContent="Invalid speed command.";
+    return;
+  }
+  if (cmd.includes("/NBR")) {
+    const commandQueue = cmd.split("/NBR").map(c => c.trim()).filter(c => c.length > 0);
+    let delay = 0;
+    const baseDelay = 900;
+    commandQueue.forEach((subCmd, index) => {
+      setTimeout(() => executeCommand(subCmd), delay);
+      delay += baseDelay;
+    });
+    workstationStatus.textContent = "Executing multiple commands (NBR mode)...";
+    return;
+  }
+  if (cmd !== cmd.toUpperCase() && !cmd.includes("(inf)")) {alert("Undefined Command! Please read the instructions carefully!");
+    workstationStatus.textContent = "Invalid syntax (case mismatch)."; return;}
+  if (cmd === "STOP") {stopInfiniteMove(); workstationStatus.textContent = "All infinite movements stopped."; return;}
+  if (cmd === "MOV ORG") {resetPosition(); return;}
+  const movPattern = /^(MOV|TRB)\s+(ROT\s+)?(UP|DN|LF|RT)\s*(?:([LR]F|[LR]T))?\((\d+|inf)\)$/;
+  const rotPattern = /^(ROT|TROT)\s+(LF|RT)\((\d+|inf)\)$/;
+  let match;
+  if ((match = cmd.match(movPattern))) {
+    const [, mode, isRot, direction, rotDir, stepsRaw] = match;
+    const turbo = mode === "TRB";
+    const steps = stepsRaw === "inf" ? Infinity : parseInt(stepsRaw);
+        if (steps === Infinity) {startInfiniteMove(direction, turbo, !!isRot, rotDir);} 
+        else {moveRobot(direction, steps, turbo, !!isRot, rotDir);}
+  const spokenText = `Executed: ${cmd}`;
+  workstationStatus.textContent = spokenText;
+  speak(spokenText);
+    return;
+  } 
+  if ((match = cmd.match(rotPattern))) {
+    const [, mode, direction, stepsRaw] = match;
+    const turbo = mode === "TROT";
+    const steps = stepsRaw === "inf" ? Infinity : parseInt(stepsRaw);
+    if (steps === Infinity) {stopInfiniteMove(); moveInterval = setInterval(() => rotateRobot(direction, 1, turbo), 100);
+    } else {rotateRobot(direction, steps, turbo);}
+    const spokenText = `Executed: ${cmd}`;
+    workstationStatus.textContent = spokenText;
+    speak(spokenText);
+  } 
+  else {workstationStatus.textContent = "Invalid command";}
+}
+workstationInput.addEventListener("input", () => {
+  if (workstationInput.value.includes("/NBR")) {
+    workstationInput.value = workstationInput.value.replace(/\/NBR/g, "\n");
+  }
+});
+workstationInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    const commands = workstationInput.value
+      .split("\n")
+      .map(cmd => cmd.trim())
+      .filter(cmd => cmd.length > 0);
+    let delay = 0;
+    const baseDelay = 900;
+    commands.forEach(cmd => {setTimeout(() => executeCommand(cmd), delay); delay += baseDelay;});
+    workstationInput.value = "";
+  }
+});
+function speak(text) {const utterance = new SpeechSynthesisUtterance(text); 
+  utterance.rate = 1; utterance.pitch = 1; utterance.volume = 1;
+  speechSynthesis.speak(utterance);}
+</script>
+</body>
+</html>
