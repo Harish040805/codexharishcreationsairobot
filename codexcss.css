@@ -5,7 +5,7 @@ body {font-family: 'Courier New', monospace;margin: 0;background-color: #fff;dis
 		z-index: 1000;}
 #splash-screen img {width: 200px;height: 200px;}
 .face{object-fit: contain; width: 100px; height: 105px;}
-.faceimg{}
+.faceimg{width: 60%; height: 60%; border-radius: 50%;}
 .robot-body {display: flex;flex-direction: column;align-items: center;position: absolute;top: 30%;left: 50%;transform: translate(-50%, -50%);}
 .robot-body.weight {display: flex;flex-direction: column;align-items: center;position: relative;}
 .robot-torso {width: 250px;height: 370px;background: linear-gradient(to bottom, #fff, #cdcdcd);border-radius: 10px;position: absolute;top: 100px;left: 50%;
