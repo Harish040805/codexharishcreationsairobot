@@ -20,7 +20,7 @@ body {font-family: 'Courier New', monospace;margin: 0;background-color: #fff;dis
 .instruction-container {display: flex;flex-wrap: wrap;justify-content: space-between;width: 10%;height: 25%;position: fixed;z-index: 10; background: #606060;
 	border-radius: 10%;top: 65%;left: 85%;}
 .robot-text {position: absolute;top: 10%;left: 50%;transform: translate(-50%, -50%);font-size: 16px;font-weight: bold;color: #000000b6;text-align: center;
-	z-index: 5000;}
+	z-index: 5000;margin-bottom: 30px;}
 .instruction-box {position: fixed;top: 0;left: 0;z-index: 2;background-color: #f0f0f0;padding: 10px;border: 1px solid #ddd;width: 285px;height: 100%;
 	font-size: 14px !important;max-height: 96vh; overflow-y: auto;overflow-x: hidden;scrollbar-width: thin; scrollbar-color: #888 #f0f0f0;transform: scale(1);
 	transform-origin: 0 0;-webkit-text-size-adjust: none;-moz-text-size-adjust: none;-ms-text-size-adjust: none;text-size-adjust: none;}
