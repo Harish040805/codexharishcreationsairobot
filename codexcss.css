@@ -44,7 +44,7 @@ body {font-family: 'Courier New', monospace;margin: 0;background-color: #fff;dis
   100% {opacity: 0.7;}
 }
 #robot {position: absolute;transition: all 0.8s ease-in-out;}
-#mechanical-wheel{position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 1;  margin-top: 40px;}
+#mechanical-wheel-container{position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 1;  margin-top: 40px;}
 #toggleInstructions {position: fixed;top: 10px;left: 10px;z-index: 9999;background: #000;color: #fff;border: none;border-radius: 7px;
   width: 200px;height: 40px;font-size: 18px;cursor: pointer;transition: transform 0.2s ease;}
 #toggleInstructions:hover{background: #424242;color: #fff;}
